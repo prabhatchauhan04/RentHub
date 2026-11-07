@@ -1,0 +1,79 @@
+
+<!-- Shows incoming inquiries with sender details and read status. -->
+
+<section class="notifications-page">
+  <div class="page-header">
+    <div>
+      <h1>Notifications</h1>
+      <p>Inquiries received from people interested in your properties.</p>
+    </div>
+
+    <button
+      class="mark-all-button"
+      type="button"
+      [disabled]="!hasUnreadNotifications || isMarkingAll"
+      (click)="markAllAsRead()"
+    >
+      {{ isMarkingAll ? 'Updating...' : 'Mark all as read' }}
+    </button>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  } @else if (isLoading) {
+    <div class="message-state">Loading notifications...</div>
+  } @else if (notifications.length === 0) {
+    <div class="message-state empty-state">
+      <h2>No notifications yet</h2>
+      <p>New property inquiries will appear here.</p>
+    </div>
+  } @else {
+    <div class="notification-list">
+      @for (notification of notifications; track notification.id) {
+        <article
+          class="notification-card"
+          [class.unread]="!notification.isRead"
+        >
+          <div class="notification-top">
+            <div class="sender-details">
+              <h2>{{ notification.sender.name }}</h2>
+              <a [href]="'mailto:' + notification.sender.email">
+                {{ notification.sender.email }}
+              </a>
+            </div>
+
+            <span
+              class="status"
+              [class.unread-status]="!notification.isRead"
+            >
+              {{ notification.isRead ? 'Read' : 'Unread' }}
+            </span>
+          </div>
+
+          <p class="inquiry-message">{{ notification.message }}</p>
+
+          <div class="property-details">
+            <span>Property:</span>
+            <a [routerLink]="['/properties', notification.property.id]">
+              {{ notification.property.title }}
+            </a>
+          </div>
+
+          <div class="notification-bottom">
+            <span>{{ notification.createdAt | date:'medium' }}</span>
+
+            @if (!notification.isRead) {
+              <button
+                type="button"
+                class="read-button"
+                (click)="markAsRead(notification)"
+              >
+                Mark as read
+              </button>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>

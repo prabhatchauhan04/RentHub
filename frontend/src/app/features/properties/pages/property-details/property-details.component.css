@@ -1,0 +1,457 @@
+
+/*
+ * Styles the complete property details page.
+ * Organizes property information, comments and landlord contact sections.
+ */
+
+.details-page {
+  min-height: 80vh;
+  padding: 35px 6%;
+  background: #f8fafc;
+}
+
+.details-container {
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 22px;
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.property-header {
+  margin-bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+}
+
+.property-header > div:first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.property-header > div:last-child {
+  flex-shrink: 0;
+  width: auto;
+}
+
+.property-header h1 {
+  margin: 0 0 9px;
+  color: #172554;
+  font-size: 30px;
+  width: 100%;
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+.property-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+  width: 100%;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.property-price {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 5px;
+  color: #64748b;
+  text-align: right;
+}
+
+.property-price strong {
+  color: #2563eb;
+  font-size: 25px;
+}
+
+.property-price small {
+  flex-basis: 100%;
+  color: #16a34a;
+  font-size: 12px;
+  text-align: right;
+}
+
+.image-gallery {
+  margin-bottom: 30px;
+}
+
+.main-image {
+  height: 430px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: #e2e8f0;
+}
+
+.main-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbnail-list {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.thumbnail {
+  width: 95px;
+  height: 70px;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.thumbnail.selected {
+  border-color: #2563eb;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.details-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  align-items: start;
+  gap: 25px;
+}
+
+.main-details {
+  min-width: 0;
+}
+
+.details-section,
+.contact-panel {
+  margin-bottom: 22px;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.details-section h2,
+.contact-panel h2 {
+  margin: 0 0 17px;
+  color: #172554;
+  font-size: 20px;
+  overflow-wrap: break-word;
+}
+
+.description {
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.8;
+  white-space: pre-line;
+}
+
+.information-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 16px;
+}
+
+.information-grid div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.information-grid span {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.information-grid strong {
+  color: #334155;
+  font-size: 14px;
+  overflow-wrap: break-word;
+}
+
+.amenity-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.amenity-list span {
+  padding: 9px 12px;
+  border-radius: 5px;
+  background: #eff6ff;
+  color: #1e40af;
+  font-size: 13px;
+}
+
+.contact-panel {
+  position: sticky;
+  top: 20px;
+}
+
+.owner-information {
+  margin-bottom: 20px;
+  padding: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-radius: 6px;
+  background: #f8fafc;
+}
+
+.owner-information strong {
+  color: #172554;
+  font-size: 15px;
+}
+
+.owner-information span {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.inquiry-form label {
+  display: block;
+  margin-bottom: 9px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.inquiry-form textarea,
+.comment-form textarea,
+.reply-form input {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  outline: none;
+  color: #334155;
+  font: inherit;
+  font-size: 13px;
+  resize: vertical;
+}
+
+.inquiry-form textarea:focus,
+.comment-form textarea:focus,
+.reply-form input:focus {
+  border-color: #2563eb;
+}
+
+.inquiry-form button,
+.comment-form button,
+.reply-form button,
+.contact-button {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 11px 16px;
+  border: 0;
+  border-radius: 5px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.inquiry-form button {
+  width: 100%;
+}
+
+.inquiry-form button:disabled,
+.comment-form button:disabled,
+.reply-form button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.privacy-note {
+  margin: 16px 0 0;
+  color: #94a3b8;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.comments-section {
+  margin-top: 22px;
+}
+
+.comment-form {
+  margin-bottom: 25px;
+}
+
+.comment-form button {
+  margin-top: 9px;
+}
+
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.comment {
+  padding: 16px 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.comment-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.comment-heading strong {
+  color: #172554;
+  font-size: 13px;
+}
+
+.comment-heading span {
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.comment > p,
+.reply p {
+  margin: 9px 0;
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+}
+
+.delete-link {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #dc2626;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.replies {
+  margin: 13px 0 0 18px;
+  padding-left: 15px;
+  border-left: 2px solid #e2e8f0;
+}
+
+.reply {
+  padding: 10px 0;
+}
+
+.reply-form {
+  margin-top: 13px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.reply-form input {
+  min-width: 0;
+}
+
+.reply-form button {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.muted {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.muted a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.success-message {
+  color: #15803d;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.error-message {
+  color: #dc2626;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.status-message,
+.empty-state {
+  padding: 60px 15px;
+  color: #64748b;
+  text-align: center;
+}
+
+.empty-state h2 {
+  color: #172554;
+}
+
+.empty-state a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+@media (max-width: 850px) {
+  .details-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .details-page {
+    padding: 25px 5%;
+  }
+
+  .property-header {
+    flex-direction: column;
+  }
+
+  .property-header h1 {
+    font-size: 25px;
+  }
+
+  .property-price small {
+    text-align: left;
+  }
+
+  .main-image {
+    height: 270px;
+  }
+
+  .details-section,
+  .contact-panel {
+    padding: 18px;
+  }
+
+  .information-grid {
+    grid-template-columns: 1fr;
+  }
+}

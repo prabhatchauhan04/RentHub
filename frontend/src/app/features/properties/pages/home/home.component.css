@@ -1,0 +1,595 @@
+
+/*
+ * Styles the RentHub home page and property browsing sections.
+ * Provides responsive layouts for the hero carousel, filters and results.
+ */
+
+.home-page {
+  min-height: 80vh;
+  background: #ffffff;
+}
+
+/* ==============================
+   Hero Carousel
+============================== */
+
+.hero-carousel {
+  position: relative;
+  width: 100%;
+  height: 460px;
+  overflow: hidden;
+  background: #172554;
+}
+
+.carousel-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+/* Slide 0 — hero text */
+.hero-slide {
+  background-color: #2aa3d6;
+  background-image: url('/assets/images/carouselBackground.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 55px 8%;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+}
+
+.hero-slide .hero-content h1 {
+  margin: 0 0 15px;
+  color: #032235;
+  font-size: clamp(28px, 4vw, 46px);
+  line-height: 1.2;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.hero-slide .hero-content p {
+  max-width: 570px;
+  margin: 0;
+  color: #052c42;
+  font-size: 17px;
+  line-height: 1.7;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* Property slides — split layout: image left 2/3, details right 1/3 */
+.property-slide {
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.carousel-image-wrapper {
+  position: relative;
+  width: 66.66%;
+  height: 100%;
+}
+
+.carousel-image {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.carousel-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to right, rgba(0,0,0,0.55) 0%, transparent 100%);
+}
+
+.carousel-details {
+  position: relative;
+  z-index: 2;
+  width: 33.33%;
+  height: 100%;
+  padding: 32px 24px;
+  color: #172554;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.carousel-badge,
+.carousel-amenities,
+.carousel-actions,
+.carousel-actions .carousel-cta,
+.carousel-actions .carousel-favourite {
+  align-self: flex-start;
+  width: fit-content;
+}
+
+.carousel-badge {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 2px 8px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 12px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.carousel-details h2 {
+  margin: 0 0 6px;
+  font-size: clamp(18px, 2.5vw, 26px);
+  font-weight: 700;
+  line-height: 1.25;
+  color: #172554;
+  width: 100%;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.carousel-location {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.carousel-rent {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #2563eb;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.carousel-title {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+  line-height: 1.4;
+  width: 100%;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.carousel-amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.carousel-amenities .amenity {
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 11px;
+}
+
+.carousel-actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+}
+
+.carousel-cta {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 6px;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.2s;
+}
+
+.carousel-cta:hover {
+  background: #1d4ed8;
+}
+
+.carousel-favourite {
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border: 1px solid #2563eb;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.carousel-favourite:hover {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.carousel-favourite.favourited {
+  border-color: #93c5fd;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.carousel-favourite.favourited:hover {
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+/* Navigation arrows on image portion only */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 46px;
+  height: 46px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  color: #ffffff;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  backdrop-filter: blur(4px);
+  pointer-events: auto;
+}
+
+.carousel-arrow svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.carousel-arrow:hover {
+  background: rgba(255,255,255,0.45);
+}
+
+.carousel-arrow-left {
+  left: 16px;
+}
+
+.carousel-arrow-right {
+  right: 16px;
+}
+
+/* Dot indicators */
+.carousel-dots {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.45);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.carousel-dot.active {
+  background: #ffffff;
+  transform: scale(1.3);
+}
+
+/* ==============================
+   Listings Section
+============================== */
+
+.section-heading {
+  margin-bottom: 23px;
+}
+
+.section-heading h2 {
+  margin: 0 0 7px;
+  color: #172554;
+  font-size: 25px;
+}
+
+.section-heading p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.listings-section {
+  padding: 45px 6%;
+}
+
+.filter-bar {
+  margin-bottom: 28px;
+  padding: 18px;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 15px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.filter-field {
+  flex: 1 1 150px;
+}
+
+.filter-field.property-type {
+  flex: 0 1 130px;
+}
+
+.filter-field.sort-field {
+  flex: 0 0 140px;
+}
+
+.filter-field.rent-range {
+  flex: 1 1 280px;
+}
+
+.filter-field.amenities-field {
+  flex: 0 0 832px;
+}
+
+.filter-controls-right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.filter-field label {
+  display: block;
+  margin-bottom: 7px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filter-actions button {
+  min-height: 42px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 1;
+}
+
+.filter-field input,
+.filter-field select {
+  width: 100%;
+  min-height: 42px;
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  background: #ffffff;
+  color: #334155;
+  font-size: 13px;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-actions button {
+  min-height: 42px;
+  padding: 0 17px;
+  border: 0;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.search-button {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.search-button:hover {
+  background: #1d4ed8;
+}
+
+.clear-button {
+  background: #e2e8f0;
+  color: #334155;
+}
+
+.property-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 22px;
+}
+
+.status-message,
+.empty-state {
+  padding: 45px 15px;
+  color: #64748b;
+  text-align: center;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px;
+  color: #172554;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.error-message {
+  margin-bottom: 20px;
+  padding: 13px;
+  border-radius: 5px;
+  background: #fef2f2;
+  color: #dc2626;
+  font-size: 14px;
+}
+
+.rent-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.rent-dash {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.rent-inputs input {
+  flex: 1;
+  min-height: 42px;
+}
+
+.amenity-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px 12px;
+  margin-top: 6px;
+}
+
+.amenity-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #334155;
+}
+
+.amenity-checkbox input {
+  width: auto;
+  min-height: auto;
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .rent-range {
+    flex: 1 1 100%;
+  }
+
+  .amenities-field {
+    flex: 1 1 100%;
+  }
+
+  .hero-carousel {
+    height: 360px;
+  }
+
+  .hero-slide {
+    padding: 32px 6%;
+  }
+
+  .carousel-property-info {
+    padding: 24px 6%;
+  }
+
+  .carousel-arrow {
+    width: 36px;
+    height: 36px;
+  }
+
+  .carousel-arrow svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .carousel-arrow-left {
+    left: 10px;
+  }
+
+  .carousel-arrow-right {
+    right: 10px;
+  }
+
+  .listings-section {
+    padding: 32px 5%;
+  }
+
+  .filter-actions {
+    width: 100%;
+  }
+
+  .filter-actions button {
+    flex: 1;
+  }
+}

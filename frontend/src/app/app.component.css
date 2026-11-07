@@ -1,0 +1,15 @@
+/*
+ * Defines the root page layout.
+ * Keeps the footer at the bottom when page content is short.
+ */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  width: 100%;
+}

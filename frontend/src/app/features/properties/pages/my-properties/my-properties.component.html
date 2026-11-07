@@ -1,0 +1,57 @@
+
+<main class="my-properties-page">
+  <div class="page-heading">
+    <div>
+      <h1>My Properties</h1>
+      <p>Manage the rental properties you have listed on RentHub.</p>
+    </div>
+
+    <a routerLink="/properties/create" class="create-button">
+      + Create Listing
+    </a>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-message" role="alert">
+      {{ errorMessage }}
+    </div>
+  } @else if (isLoading) {
+    <p class="status-message">Loading your properties...</p>
+  } @else if (properties.length === 0) {
+    <div class="empty-state">
+      <h2>You haven't listed any properties yet.</h2>
+      <p>Create your first listing to start connecting with tenants.</p>
+      <a routerLink="/properties/create" class="create-button">
+        Create Property
+      </a>
+    </div>
+  } @else {
+    <div class="property-grid">
+      @for (property of properties; track property.id) {
+        <div class="property-item">
+          <app-property-card
+            [property]="property"
+            [showFavouriteButton]="false"
+          />
+
+          <div class="management-actions">
+            <a
+              [routerLink]="['/properties', property.id, 'edit']"
+              class="edit-button"
+            >
+              Edit
+            </a>
+
+            <button
+              type="button"
+              class="delete-button"
+              (click)="deleteProperty(property)"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</main>

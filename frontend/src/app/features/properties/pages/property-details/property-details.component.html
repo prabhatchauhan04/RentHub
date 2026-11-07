@@ -1,0 +1,312 @@
+
+<main class="details-page">
+  @if (isLoading) {
+    <p class="status-message">Loading property details...</p>
+  } @else if (property) {
+    <div class="details-container">
+      <a routerLink="/" class="back-link">← Back to properties</a>
+
+      <section class="property-header">
+        <div>
+          <h1>{{ property.propertyName }}</h1>
+          <p>{{ property.address }}, {{ property.area }}, {{ property.city }}, {{ property.state }} {{ property.postalCode }}</p>
+        </div>
+
+        <div class="property-price">
+          <strong>{{ property.monthlyRent | currency:'INR':'symbol':'1.0-0' }}</strong>
+          <span>/ month</span>
+          @if (property.isNegotiable) {
+            <small>Rent is negotiable</small>
+          }
+          @if (isTenant) {
+            <div style="flex-basis: 100%; width: 100%; display: flex; justify-content: flex-end;">
+              <button
+                type="button"
+                class="favourite-toggle-button"
+                [class.favourited]="isFavourite"
+                (click)="toggleFavourite()"
+                style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 6px; background: white; cursor: pointer; display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600;"
+              >
+                <span>{{ isFavourite ? '♥ Saved to Favourites' : '♡ Save to Favourites' }}</span>
+              </button>
+            </div>
+          }
+        </div>
+      </section>
+
+      <section class="image-gallery">
+        <div class="main-image">
+          <img [src]="selectedImage || defaultPlaceholder" [alt]="property.propertyName" (error)="onImageError($event)" />
+        </div>
+
+        @if (property.images.length > 1) {
+          <div class="thumbnail-list">
+            @for (image of property.images; track image.id || image.imageUrl) {
+              <button
+                type="button"
+                class="thumbnail"
+                [class.selected]="selectedImage === image.imageUrl"
+                (click)="selectImage(image.imageUrl)"
+              >
+                <img [src]="image.imageUrl" [alt]="property.propertyName" />
+              </button>
+            }
+          </div>
+        }
+      </section>
+
+      <div class="details-layout">
+        <div class="main-details">
+          <section class="details-section">
+            <h2>{{ property.title }}</h2>
+            <p class="description">{{ property.description }}</p>
+          </section>
+
+          <section class="details-section">
+            <h2>Property Information</h2>
+
+            <div class="information-grid">
+              <div>
+                <span>Property Type</span>
+                <strong>{{ property.propertyType }}</strong>
+              </div>
+
+              <div>
+                <span>Property Name</span>
+                <strong>{{ property.propertyName }}</strong>
+              </div>
+
+              <div>
+                <span>Area</span>
+                <strong>{{ property.squareFeet }} sq. ft.</strong>
+              </div>
+
+              <div>
+                <span>Shared Property</span>
+                <strong>{{ property.sharedProperty ? 'Yes' : 'No' }}</strong>
+              </div>
+
+              <div>
+                <span>Lease Type</span>
+                <strong>{{ property.leaseType.replace('_', ' ') }}</strong>
+              </div>
+
+              <div>
+                <span>Furnishing</span>
+                <strong>{{ property.furnishingStatus === 'FURNISHED' ? 'Furnished' : 'Unfurnished' }}</strong>
+              </div>
+
+              <div>
+                <span>Price Mode</span>
+                <strong>{{ property.priceMode === 'PER_MONTH' ? 'Per Month' : 'Utilities Included' }}</strong>
+              </div>
+
+              <div>
+                <span>Vegetarian Preference</span>
+                <strong>{{ property.vegetarianPreference === 'VEGETARIAN_ONLY' ? 'Vegetarian Only' : 'No Preference' }}</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="details-section">
+            <h2>Amenities</h2>
+
+            @if (amenityNames.length > 0) {
+              <div class="amenity-list">
+                @for (amenity of amenityNames; track amenity) {
+                  <span>{{ amenity }}</span>
+                }
+              </div>
+            } @else {
+              <p class="muted">No amenities listed.</p>
+            }
+          </section>
+
+          <section class="details-section comments-section">
+            <h2>Comments and Discussion</h2>
+
+            @if (authService.isAuthenticated) {
+              <form class="comment-form" (ngSubmit)="addComment()">
+                <textarea
+                  name="newComment"
+                  [(ngModel)]="newComment"
+                  placeholder="Share your thoughts about this property..."
+                  rows="3"
+                  maxlength="1000"
+                  required
+                ></textarea>
+
+                <button
+                  type="submit"
+                  [disabled]="!newComment.trim() || isSendingComment"
+                >
+                  {{ isSendingComment ? 'Posting...' : 'Post Comment' }}
+                </button>
+              </form>
+            } @else {
+              <p class="muted">
+                <a routerLink="/login">Log in</a> to join the discussion.
+              </p>
+            }
+
+            @if (comments.length > 0) {
+              <div class="comment-list">
+                @for (comment of comments; track comment.id) {
+                  <article class="comment">
+                    <div class="comment-heading">
+                      <strong>{{ comment.user.name }}</strong>
+                      <span>{{ comment.createdAt | date:'mediumDate' }}</span>
+                    </div>
+
+                    <p>{{ comment.content }}</p>
+
+                    @if (authService.currentUser?.id === comment.user.id) {
+                      <button
+                        type="button"
+                        class="delete-link"
+                        [disabled]="isDeletingComment"
+                        (click)="deleteComment(comment.id)"
+                      >
+                        Delete
+                      </button>
+                    }
+
+                    @if (commentError) {
+                      <p class="error-message">{{ commentError }}</p>
+                    }
+
+                    @if (comment.replies?.length) {
+                      <div class="replies">
+                        @for (reply of comment.replies; track reply.id) {
+                          <div class="reply">
+                            <div class="comment-heading">
+                              <strong>{{ reply.user.name }}</strong>
+                              <span>{{ reply.createdAt | date:'mediumDate' }}</span>
+                            </div>
+                            <p>{{ reply.content }}</p>
+
+                            @if (authService.currentUser?.id === reply.user.id) {
+                              <button
+                                type="button"
+                                class="delete-link"
+                                [disabled]="isDeletingComment"
+                                (click)="deleteComment(reply.id)"
+                              >
+                                Delete
+                              </button>
+                            }
+                          </div>
+                        }
+                      </div>
+                    }
+
+                    @if (authService.isAuthenticated) {
+                      <form
+                        class="reply-form"
+                        (ngSubmit)="addReply(comment.id)"
+                      >
+                        <input
+                          type="text"
+                          [name]="'reply-' + comment.id"
+                          [(ngModel)]="replyContent[comment.id]"
+                          placeholder="Write a reply..."
+                          maxlength="1000"
+                          required
+                        />
+
+                        <button
+                          type="submit"
+                          [disabled]="!replyContent[comment.id]?.trim() || isSendingComment"
+                        >
+                          Reply
+                        </button>
+                      </form>
+                    }
+                  </article>
+                }
+              </div>
+            } @else {
+              <p class="muted">No comments yet. Start the discussion.</p>
+            }
+          </section>
+        </div>
+
+        <aside class="contact-panel">
+          <h2>Contact Landlord</h2>
+
+          @if (property.owner) {
+            <div class="owner-information">
+              <strong>{{ property.owner.name }}</strong>
+              <span>Property Owner</span>
+            </div>
+          }
+
+          @if (isOwner) {
+            <p class="muted">This is your property listing.</p>
+            <a
+              class="contact-button"
+              [routerLink]="['/properties', property.id, 'edit']"
+            >
+              Edit Property
+            </a>
+          } @else if (isTenant) {
+            <form class="inquiry-form" (ngSubmit)="sendInquiry()">
+              <label for="inquiryMessage">Send a private inquiry</label>
+              <textarea
+                id="inquiryMessage"
+                name="inquiryMessage"
+                [(ngModel)]="inquiryMessage"
+                placeholder="I'm interested in this property. Please contact me..."
+                rows="5"
+                minlength="5"
+                maxlength="2000"
+                required
+                (input)="justSentInquiry = false"
+                #inquiryMessageInput="ngModel"
+              ></textarea>
+
+              @if (
+                inquiryMessageInput.invalid &&
+                inquiryMessageInput.touched &&
+                !justSentInquiry
+              ) {
+                <p class="error-message">
+                  Message must be at least 5 characters.
+                </p>
+              }
+
+              <button
+                type="submit"
+                [disabled]="inquiryMessage.trim().length < 5 || isSendingInquiry"
+              >
+                {{ isSendingInquiry ? 'Sending...' : 'Send Inquiry' }}
+              </button>
+            </form>
+          } @else {
+            <p class="muted">
+              <a routerLink="/login">Log in</a> as a tenant to contact the landlord.
+            </p>
+          }
+
+          @if (successMessage) {
+            <p class="success-message">{{ successMessage }}</p>
+          }
+
+          @if (errorMessage) {
+            <p class="error-message">{{ errorMessage }}</p>
+          }
+
+          <p class="privacy-note">
+            Your inquiry is private and will be delivered to the landlord's notifications.
+          </p>
+        </aside>
+      </div>
+    </div>
+  } @else {
+    <div class="empty-state">
+      <h2>Property unavailable</h2>
+      <p>{{ errorMessage || 'This property could not be found.' }}</p>
+      <a routerLink="/">Return to Home</a>
+    </div>
+  }
+</main>

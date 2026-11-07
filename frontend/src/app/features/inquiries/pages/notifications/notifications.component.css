@@ -1,0 +1,172 @@
+
+/*
+ * Styles the landlord notifications page.
+ * Keeps notification cards readable and responsive.
+ */
+
+.notifications-page {
+  width: min(100% - 40px, 1000px);
+  margin: 45px auto;
+  min-height: 60vh;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.page-header h1 {
+  margin: 0 0 8px;
+  color: #172554;
+  font-size: 32px;
+}
+
+.page-header p {
+  margin: 0;
+  color: #64748b;
+}
+
+.mark-all-button,
+.read-button {
+  border: none;
+  border-radius: 6px;
+  padding: 11px 16px;
+  background: #1e3a8a;
+  color: white;
+  cursor: pointer;
+}
+
+.mark-all-button:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+.notification-list {
+  display: grid;
+  gap: 16px;
+}
+
+.notification-card {
+  padding: 22px;
+  border: 1px solid #e2e8f0;
+  border-radius: 9px;
+  background: white;
+}
+
+.notification-card.unread {
+  border-left: 4px solid #2563eb;
+  background: #f8faff;
+}
+
+.notification-top,
+.notification-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.sender-details h2 {
+  margin: 0 0 5px;
+  color: #1e293b;
+  font-size: 18px;
+}
+
+.sender-details a,
+.property-details a {
+  color: #1d4ed8;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.sender-details a:hover,
+.property-details a:hover {
+  text-decoration: underline;
+}
+
+.status {
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: #e2e8f0;
+  color: #475569;
+  font-size: 12px;
+}
+
+.unread-status {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.inquiry-message {
+  margin: 20px 0;
+  color: #334155;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.property-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+
+.property-details span {
+  color: #64748b;
+}
+
+.notification-bottom {
+  padding-top: 14px;
+  border-top: 1px solid #e2e8f0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.read-button {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.message-state {
+  padding: 50px 20px;
+  text-align: center;
+  color: #64748b;
+}
+
+.empty-state h2 {
+  margin-bottom: 8px;
+  color: #1e293b;
+}
+
+.error-message {
+  margin-bottom: 18px;
+  padding: 12px 15px;
+  border-radius: 6px;
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+@media (max-width: 600px) {
+  .notifications-page {
+    width: min(100% - 28px, 1000px);
+    margin: 28px auto;
+  }
+
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .notification-card {
+    padding: 16px;
+  }
+
+  .notification-top {
+    align-items: flex-start;
+  }
+}

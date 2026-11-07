@@ -1,0 +1,33 @@
+
+<main class="favourites-page">
+  <div class="page-heading">
+    <h1>My Favourites</h1>
+    <p>Properties you have saved for later.</p>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-message" role="alert">
+      {{ errorMessage }}
+    </div>
+  } @else if (isLoading) {
+    <p class="status-message">Loading your favourites...</p>
+  } @else if (properties.length === 0) {
+    <div class="empty-state">
+      <h2>No favourite properties yet.</h2>
+      <p>Explore rental listings and save properties you like.</p>
+      <a routerLink="/">Explore Properties</a>
+    </div>
+  } @else {
+    <div class="property-grid">
+      @for (property of properties; track property.id) {
+        <div class="property-item">
+          <app-property-card
+            [property]="property"
+            [isFavourite]="true"
+            (favouriteToggle)="removeFavourite($event)"
+          />
+        </div>
+      }
+    </div>
+  }
+</main>

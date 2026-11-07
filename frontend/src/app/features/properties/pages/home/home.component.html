@@ -1,0 +1,261 @@
+
+<main class="home-page">
+
+  <!-- ===== Hero Carousel ===== -->
+  <section class="hero-carousel" aria-label="Featured properties carousel">
+
+    <!-- Slide 0: hero text (no property) -->
+    <div class="carousel-slide hero-slide" [class.active]="carouselIndex === 0">
+      <div class="hero-content">
+        <h1>Featured Properties Will Show Here</h1>
+        <p>Discover handpicked rental listings curated just for you.</p>
+      </div>
+
+      <!-- Navigation arrows on hero slide -->
+      <button
+        class="carousel-arrow carousel-arrow-left hero-arrow"
+        type="button"
+        (click)="prevSlide()"
+        aria-label="Previous slide"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+
+      <button
+        class="carousel-arrow carousel-arrow-right hero-arrow"
+        type="button"
+        (click)="nextSlide()"
+        aria-label="Next slide"
+      >
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Slides 1+: one featured property each (split layout: image left 2/3, details right 1/3) -->
+    @for (property of featuredProperties; track property.id; let i = $index) {
+      <div class="carousel-slide property-slide" [class.active]="carouselIndex === i + 1">
+        <div class="carousel-image-wrapper">
+          <img
+            class="carousel-image"
+            [src]="property.images?.[0]?.imageUrl || defaultPlaceholder"
+            [alt]="property.propertyName"
+            (error)="onImageError($event)"
+          />
+          <!-- Navigation arrows on image portion only -->
+          <button
+            class="carousel-arrow carousel-arrow-left"
+            type="button"
+            (click)="prevSlide()"
+            aria-label="Previous slide"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 18l-6-6 6-6" />
+            </svg>
+          </button>
+
+          <button
+            class="carousel-arrow carousel-arrow-right"
+            type="button"
+            (click)="nextSlide()"
+            aria-label="Next slide"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 18l6-6-6-6" />
+            </svg>
+          </button>
+        </div>
+        <div class="carousel-details">
+          <span class="carousel-badge">Featured</span>
+          <h2>{{ property.propertyName }}</h2>
+          <p class="carousel-location">
+            {{ property.area }}, {{ property.city }}
+          </p>
+          <p class="carousel-rent">{{ formatRent(property.monthlyRent) }} / month</p>
+          <p class="carousel-title">{{ property.title }}</p>
+          @if (amenityNames(property).length > 0) {
+            <div class="carousel-amenities">
+              @for (amenity of amenityNames(property); track amenity) {
+                <span class="amenity">{{ amenity }}</span>
+              }
+            </div>
+          }
+          <div class="carousel-actions">
+            <a
+              [routerLink]="['/properties', property.id]"
+              class="carousel-cta"
+            >View Details</a>
+            @if (authService.currentUser?.role === 'TENANT') {
+              <button
+                type="button"
+                class="carousel-favourite"
+                [class.favourited]="isFavourite(property.id)"
+                [attr.aria-label]="isFavourite(property.id) ? 'Remove from favourites' : 'Mark as favourite'"
+                (click)="toggleFavourite(property.id)"
+              >
+                {{ isFavourite(property.id) ? 'Remove from Favourites' : 'Mark as Favourite' }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- Dot indicators -->
+    <div class="carousel-dots" role="tablist" aria-label="Carousel slides">
+      @for (item of carouselItems; track $index) {
+        <button
+          type="button"
+          role="tab"
+          class="carousel-dot"
+          [class.active]="$index === carouselIndex"
+          [attr.aria-selected]="$index === carouselIndex"
+          [attr.aria-label]="$index === 0 ? 'Hero slide' : 'Featured property ' + $index"
+          (click)="goToSlide($index)"
+        ></button>
+      }
+    </div>
+  </section>
+
+  <section class="listings-section">
+    <div class="section-heading">
+      <div>
+        <h2>Explore Properties</h2>
+        <p>Find a rental property that matches your needs.</p>
+      </div>
+    </div>
+
+    <form class="filter-bar" (ngSubmit)="applyFilters()">
+      <div class="filter-field search-field">
+        <label for="search">Search</label>
+        <input
+          id="search"
+          type="text"
+          name="search"
+          [(ngModel)]="search"
+          placeholder="Property name or keyword"
+        />
+      </div>
+
+      <div class="filter-field">
+        <label for="city">City</label>
+        <input
+          id="city"
+          type="text"
+          name="city"
+          [(ngModel)]="city"
+          placeholder="Enter city"
+        />
+      </div>
+
+      <div class="filter-field rent-range">
+        <label>Rent Range</label>
+        <div class="rent-inputs">
+          <input
+            id="minRent"
+            type="number"
+            name="minRent"
+            [(ngModel)]="minRent"
+            placeholder="Min"
+            min="0"
+          />
+          <span class="rent-dash">–</span>
+          <input
+            id="maxRent"
+            type="number"
+            name="maxRent"
+            [(ngModel)]="maxRent"
+            placeholder="Max"
+            min="0"
+          />
+        </div>
+      </div>
+
+      <div class="filter-field property-type">
+        <label for="propertyType">Property Type</label>
+        <select id="propertyType" name="propertyType" [(ngModel)]="propertyType">
+          @for (opt of propertyTypeOptions; track opt.value) {
+            <option [value]="opt.value">{{ opt.label }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-field">
+        <label for="furnishingStatus">Furnished</label>
+        <select id="furnishingStatus" name="furnishingStatus" [(ngModel)]="furnishingStatus">
+          @for (opt of furnishingOptions; track opt.value) {
+            <option [value]="opt.value">{{ opt.label }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-field amenities-field">
+        <label>Amenities</label>
+        <div class="amenity-checkboxes">
+          @for (amenity of amenitiesList; track amenity) {
+            <label class="amenity-checkbox">
+              <input
+                type="checkbox"
+                [checked]="isAmenitySelected(amenity)"
+                (change)="toggleAmenity(amenity, $any($event.target).checked)"
+              />
+              {{ amenity }}
+            </label>
+          }
+        </div>
+      </div>
+
+      <div class="filter-controls-right">
+        <div class="filter-field sort-field" style="flex-basis: 100%;">
+          <label for="sort">Sort By</label>
+          <select id="sort" name="sort" [(ngModel)]="sort">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="rent_asc">Rent: Low to High</option>
+            <option value="rent_desc">Rent: High to Low</option>
+          </select>
+        </div>
+
+        <div class="filter-actions" style="flex-basis: 100%;">
+          <button type="submit" class="search-button">Search</button>
+          <button type="button" class="clear-button" (click)="clearFilters()">
+            Clear
+          </button>
+        </div>
+      </div>
+    </form>
+
+    @if (errorMessage) {
+      <div class="error-message" role="alert">
+        {{ errorMessage }}
+      </div>
+    } @else if (isLoading) {
+      <p class="status-message">Loading properties...</p>
+    } @else if (properties.length === 0) {
+      <div class="empty-state">
+        <h3>No properties found</h3>
+        <p>Try changing your search or filters.</p>
+      </div>
+    } @else {
+      <div class="property-grid">
+        @for (property of properties; track property.id) {
+          <app-property-card
+            [property]="property"
+            [showFavouriteButton]="authService.currentUser?.role === 'TENANT'"
+            [isFavourite]="isFavourite(property.id)"
+            (favouriteToggle)="toggleFavourite($event)"
+          />
+        }
+      </div>
+
+      <app-pagination
+        [currentPage]="pagination.page"
+        [totalPages]="pagination.totalPages"
+        (pageChange)="changePage($event)"
+      />
+    }
+  </section>
+</main>

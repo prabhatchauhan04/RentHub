@@ -1,0 +1,168 @@
+
+/*
+ * Styles the main RentHub navigation bar.
+ * Keeps navigation clear and responsive across screen sizes.
+ */
+
+.navbar {
+  min-height: 70px;
+  padding: 0 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.brand {
+  color: #172554;
+  font-size: 27px;
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: -1px;
+}
+
+.brand-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.role-tag {
+  display: inline-block;
+  padding: 1px 5px;
+  background: #000000;
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 600;
+  border-radius: 5px;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 22px;
+}
+
+.nav-links a {
+  color: #475569;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: #2563eb;
+}
+
+.nav-links .signup-link {
+  padding: 10px 17px;
+  color: #ffffff;
+  background: #2563eb;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-links .signup-link:hover,
+.nav-links .signup-link:focus,
+.nav-links .signup-link:active,
+.nav-links .signup-link.active {
+  color: #ffffff;
+  background: #1d4ed8;
+}
+
+.user-menu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 6px 10px;
+  color: #334155;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.user-menu:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.user-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.user-name-email {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-label {
+  font-size: 9px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.user-divider {
+  width: 1px;
+  height: 12px;
+  background: #cbd5e1;
+  margin: 0 6px;
+  align-self: center;
+}
+
+.user-divider-expanded {
+  height: 24px;
+}
+
+.user-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.user-email {
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.logout-button {
+  padding: 9px 15px;
+  color: #334155;
+  background: #f1f5f9;
+  border: 0;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background: #e2e8f0;
+}
+
+@media (max-width: 700px) {
+  .navbar {
+    padding: 16px 5%;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .nav-links {
+    justify-content: flex-start;
+    gap: 14px;
+  }
+}

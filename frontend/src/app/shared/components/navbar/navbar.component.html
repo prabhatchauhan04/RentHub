@@ -1,0 +1,58 @@
+<nav class="navbar">
+  <div class="brand-wrapper">
+    <a class="brand" routerLink="/">RentHub</a>
+
+    @if (authService.currentUser$ | async; as user) {
+      <span class="role-tag">{{ user.role }}</span>
+    }
+  </div>
+
+  <div class="nav-links">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      Home
+    </a>
+
+    @if (authService.currentUser$ | async; as user) {
+      @if (user.role === 'LANDLORD') {
+        <a routerLink="/properties/mine" routerLinkActive="active">
+          My Properties
+        </a>
+        <a routerLink="/properties/create" routerLinkActive="active">
+          Create Listing
+        </a>
+        <a routerLink="/notifications" routerLinkActive="active">
+          Notifications
+        </a>
+      }
+
+      @if (user.role === 'TENANT') {
+        <a routerLink="/favourites" routerLinkActive="active">
+          Favourites
+        </a>
+        <a routerLink="/inquiries/sent" routerLinkActive="active">
+          My Inquiries
+        </a>
+      }
+
+      <div class="user-menu" (click)="toggleUserMenu()">
+        <div class="user-top">
+          <div class="user-label">profile</div>
+          <div class="user-divider" [class.user-divider-expanded]="showEmail"></div>
+          <div class="user-name-email">
+            <div class="user-name">{{ authService.currentUser?.name }}</div>
+            @if (showEmail) {
+              <div class="user-email">{{ authService.currentUser?.email }}</div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <button class="logout-button" type="button" (click)="logout()">
+        Logout
+      </button>
+    } @else {
+      <a routerLink="/login">Login</a>
+      <a class="signup-link" routerLink="/signup">Sign Up</a>
+    }
+  </div>
+</nav>

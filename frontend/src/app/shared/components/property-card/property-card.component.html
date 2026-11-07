@@ -1,0 +1,66 @@
+
+<article class="property-card">
+  <div class="image-container">
+    <img
+      [src]="imageUrl"
+      [alt]="property.propertyName"
+      class="property-image"
+      (error)="onImageError($event)"
+    />
+
+    <span class="property-type">{{ property.propertyType }}</span>
+  </div>
+
+  <div class="property-content">
+    <div class="property-heading">
+      <h3>{{ property.propertyName }}</h3>
+    </div>
+
+    <span class="rent">
+      {{ property.monthlyRent | currency:'INR':'symbol':'1.0-0' }}
+      <small>/ month</small>
+    </span>
+
+    <p class="location">
+      {{ property.area }}, {{ property.city }}
+    </p>
+
+    <p class="property-title">{{ property.title }}</p>
+
+    <div class="property-info">
+      <span>{{ property.squareFeet }} sq. ft.</span>
+      <span>{{ property.furnishingStatus === 'FURNISHED' ? 'Furnished' : 'Unfurnished' }}</span>
+      <span>{{ property.leaseType.replace('_', ' ') }}</span>
+    </div>
+
+    @if (amenityNames.length > 0) {
+      <div class="amenities">
+        @for (amenity of amenityNames; track amenity) {
+          <span class="amenity">{{ amenity }}</span>
+        }
+      </div>
+    }
+
+    <div class="card-footer">
+      <a [routerLink]="['/properties', property.id]" class="details-link">
+        View Details
+      </a>
+
+      @if (showFavouriteButton) {
+        <button
+          type="button"
+          class="favourite-action-button"
+          [class.favourited]="isFavourite"
+          [attr.aria-label]="isFavourite ? 'Remove from favourites' : 'Mark as favourite'"
+          (click)="toggleFavourite()"
+        >
+          {{ isFavourite ? 'Remove from Favourites' : 'Mark as Favourite' }}
+        </button>
+      } @else {
+        <span class="posted-date">
+          {{ property.createdAt | date:'mediumDate' }}
+        </span>
+      }
+    </div>
+  </div>
+</article>

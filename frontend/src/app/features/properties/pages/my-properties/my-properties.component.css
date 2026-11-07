@@ -1,0 +1,125 @@
+
+/*
+ * Styles the landlord's property management page.
+ * Provides listing management actions and responsive property cards.
+ */
+
+.my-properties-page {
+  min-height: 80vh;
+  padding: 40px 6%;
+  background: #f7f8fc;
+}
+
+.page-heading {
+  margin-bottom: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+}
+
+.page-heading h1 {
+  margin: 0 0 8px;
+  color: #172554;
+  font-size: 29px;
+}
+
+.page-heading p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.create-button {
+  display: inline-block;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 5px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.create-button:hover {
+  background: #1d4ed8;
+}
+
+.property-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 22px;
+}
+
+.property-item {
+  min-width: 0;
+}
+
+.management-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+.management-actions a,
+.management-actions button {
+  flex: 1;
+  padding: 10px;
+  border: 0;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.edit-button {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.delete-button {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.status-message,
+.empty-state {
+  padding: 55px 15px;
+  color: #64748b;
+  text-align: center;
+}
+
+.empty-state h2 {
+  margin: 0 0 10px;
+  color: #172554;
+  font-size: 21px;
+}
+
+.empty-state p {
+  margin-bottom: 22px;
+  font-size: 14px;
+}
+
+.error-message {
+  margin-bottom: 20px;
+  padding: 12px;
+  border-radius: 5px;
+  background: #fef2f2;
+  color: #dc2626;
+  font-size: 13px;
+}
+
+@media (max-width: 600px) {
+  .my-properties-page {
+    padding: 28px 5%;
+  }
+
+  .page-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

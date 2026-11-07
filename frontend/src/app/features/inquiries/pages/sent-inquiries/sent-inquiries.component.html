@@ -1,0 +1,53 @@
+
+<!-- Displays inquiries submitted by the current tenant. -->
+
+<section class="sent-inquiries-page">
+  <div class="page-header">
+    <h1>My Inquiries</h1>
+    <p>View the messages you have sent to property owners.</p>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-message">{{ errorMessage }}</div>
+  } @else if (isLoading) {
+    <div class="message-state">Loading your inquiries...</div>
+  } @else if (inquiries.length === 0) {
+    <div class="message-state empty-state">
+      <h2>No inquiries sent</h2>
+      <p>When you contact a property owner, your inquiries will appear here.</p>
+      <a routerLink="/">Explore properties</a>
+    </div>
+  } @else {
+    <div class="inquiry-list">
+      @for (inquiry of inquiries; track inquiry.id) {
+        <article class="inquiry-card">
+          <div class="card-header">
+            <div>
+              <h2>{{ inquiry.property.title }}</h2>
+              <p class="location">
+                {{ inquiry.property.area }}, {{ inquiry.property.city }}
+              </p>
+            </div>
+
+            <span
+              class="status"
+              [class.read-status]="inquiry.isRead"
+            >
+              {{ inquiry.isRead ? 'Read by owner' : 'Awaiting response' }}
+            </span>
+          </div>
+
+          <p class="message">{{ inquiry.message }}</p>
+
+          <div class="card-footer">
+            <span>{{ inquiry.createdAt | date:'medium' }}</span>
+
+            <a [routerLink]="['/properties', inquiry.property.id]">
+              View property
+            </a>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>

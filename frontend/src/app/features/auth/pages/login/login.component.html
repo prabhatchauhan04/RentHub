@@ -1,0 +1,65 @@
+
+<div class="auth-page">
+  <section class="auth-card">
+    <div class="auth-heading">
+      <h1>Welcome Back</h1>
+      <p>Log in to your RentHub account.</p>
+    </div>
+
+    @if (errorMessage) {
+      <div class="error-message" role="alert">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <form #loginForm="ngForm" (ngSubmit)="submitLogin()">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          placeholder="Enter your email"
+          required
+          email
+          #emailInput="ngModel"
+        />
+
+        @if (emailInput.invalid && emailInput.touched) {
+          <small class="field-error">Enter a valid email address.</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          placeholder="Enter your password"
+          required
+          #passwordInput="ngModel"
+        />
+
+        @if (passwordInput.invalid && passwordInput.touched) {
+          <small class="field-error">Password is required.</small>
+        }
+      </div>
+
+      <button
+        type="submit"
+        class="submit-button"
+        [disabled]="loginForm.invalid || isLoading"
+      >
+        {{ isLoading ? 'Logging in...' : 'Login' }}
+      </button>
+    </form>
+
+    <p class="auth-switch">
+      Don't have an account?
+      <a routerLink="/signup">Create an account</a>
+    </p>
+  </section>
+</div>

@@ -1,0 +1,534 @@
+
+<main class="property-form-page">
+  <div class="form-container">
+    <div class="page-heading">
+      <h1>{{ isEditMode ? 'Edit Property' : 'Create Property Listing' }}</h1>
+      <p>
+        {{ isEditMode
+          ? 'Update your property information.'
+          : 'Provide property details to attract potential tenants.' }}
+      </p>
+    </div>
+
+    @if (errorMessage) {
+      <div class="alert error-alert" role="alert">
+        {{ errorMessage }}
+      </div>
+    }
+
+    @if (isLoading && isEditMode && !showPreview) {
+      <p class="loading-message">Loading property information...</p>
+    } @else if (!showPreview) {
+      <form #propertyForm="ngForm" (ngSubmit)="openPreview(propertyForm)">
+
+        <section class="form-section">
+          <h2>Property Information</h2>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="propertyType">Property Type *</label>
+              <select
+                id="propertyType"
+                name="propertyType"
+                [(ngModel)]="form.propertyType"
+                required
+              >
+                <option value="APARTMENT">Apartment</option>
+                <option value="BUILDING">Building</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="propertyName">Name of Property *</label>
+              <input
+                id="propertyName"
+                name="propertyName"
+                type="text"
+                [(ngModel)]="form.propertyName"
+                required
+                minlength="2"
+                maxlength="150"
+                placeholder="Enter property name"
+                #propertyNameInput="ngModel"
+              />
+              @if (propertyNameInput.invalid && propertyNameInput.touched) {
+                <small style="color:#dc2626;">
+                  Property name must be at least 2 characters.
+                </small>
+              }
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Is this a shared property? *</label>
+            <div class="radio-group">
+              <label>
+                <input
+                  type="radio"
+                  name="sharedProperty"
+                  [value]="true"
+                  [(ngModel)]="form.sharedProperty"
+                />
+                Yes
+              </label>
+
+              <label>
+                <input
+                  type="radio"
+                  name="sharedProperty"
+                  [value]="false"
+                  [(ngModel)]="form.sharedProperty"
+                />
+                No
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h2>Property Address</h2>
+
+          <div class="form-group">
+            <label for="address">Street Address *</label>
+            <input
+              id="address"
+              name="address"
+              type="text"
+              [(ngModel)]="form.address"
+              required
+              minlength="5"
+              maxlength="255"
+              placeholder="Enter street address"
+              #addressInput="ngModel"
+            />
+              @if (addressInput.invalid && addressInput.touched) {
+                <small style="color:#dc2626;">
+                  Address must be at least 5 characters.
+                </small>
+              }
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="area">Area / Locality *</label>
+              <input
+                id="area"
+                name="area"
+                type="text"
+                [(ngModel)]="form.area"
+                required
+                minlength="2"
+                maxlength="100"
+                #areaInput="ngModel"
+              />
+              @if (areaInput.invalid && areaInput.touched) {
+                <small style="color:#dc2626;">
+                  Area must be at least 2 characters.
+                </small>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="city">City *</label>
+              <input
+                id="city"
+                name="city"
+                type="text"
+                [(ngModel)]="form.city"
+                required
+                minlength="2"
+                maxlength="100"
+                #cityInput="ngModel"
+              />
+              @if (cityInput.invalid && cityInput.touched) {
+                <small style="color:#dc2626;">
+                  City must be at least 2 characters.
+                </small>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="state">State *</label>
+              <input
+                id="state"
+                name="state"
+                type="text"
+                [(ngModel)]="form.state"
+                required
+                minlength="2"
+                maxlength="100"
+                #stateInput="ngModel"
+              />
+              @if (stateInput.invalid && stateInput.touched) {
+                <small style="color:#dc2626;">
+                  State must be at least 2 characters.
+                </small>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="postalCode">Postal Code *</label>
+              <input
+                id="postalCode"
+                name="postalCode"
+                type="text"
+                [(ngModel)]="form.postalCode"
+                required
+                minlength="4"
+                maxlength="12"
+                #postalCodeInput="ngModel"
+              />
+              @if (postalCodeInput.invalid && postalCodeInput.touched) {
+                <small style="color:#dc2626;">
+                  Postal code must be at least 4 characters.
+                </small>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="squareFeet">Area (Square Feet) *</label>
+              <input
+                id="squareFeet"
+                name="squareFeet"
+                type="number"
+                [(ngModel)]="form.squareFeet"
+                required
+                min="1"
+                max="1000000"
+                #squareFeetInput="ngModel"
+              />
+              @if (squareFeetInput.invalid && squareFeetInput.touched) {
+                <small style="color:#dc2626;">
+                  Area must be between 1 and 1000000 sq. ft.
+                </small>
+              }
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h2>Rental Details</h2>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="leaseType">Lease Type *</label>
+              <select
+                id="leaseType"
+                name="leaseType"
+                [(ngModel)]="form.leaseType"
+                required
+              >
+                <option value="LONG_TERM">Long Term (6+ months)</option>
+                <option value="SHORT_TERM">Short Term</option>
+                <option value="BOTH">Both</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="monthlyRent">Expected Rent (₹) *</label>
+              <input
+                id="monthlyRent"
+                name="monthlyRent"
+                type="number"
+                [(ngModel)]="form.monthlyRent"
+                required
+                min="1"
+                max="100000000"
+                #monthlyRentInput="ngModel"
+              />
+              @if (monthlyRentInput.invalid && monthlyRentInput.touched) {
+                <small style="color:#dc2626;">
+                  Rent must be between 1 and 100000000.
+                </small>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="priceMode">Price Mode *</label>
+              <select
+                id="priceMode"
+                name="priceMode"
+                [(ngModel)]="form.priceMode"
+                required
+              >
+                <option value="PER_MONTH">Per Month</option>
+                <option value="UTILITIES_INCLUDED">Utilities Included in Rent</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="furnishingStatus">Furnished? *</label>
+              <select
+                id="furnishingStatus"
+                name="furnishingStatus"
+                [(ngModel)]="form.furnishingStatus"
+                required
+              >
+                <option value="FURNISHED">Yes</option>
+                <option value="UNFURNISHED">No</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="vegetarianPreference">Vegetarian Preference *</label>
+              <select
+                id="vegetarianPreference"
+                name="vegetarianPreference"
+                [(ngModel)]="form.vegetarianPreference"
+                required
+              >
+                <option value="VEGETARIAN_ONLY">Vegetarian Only</option>
+                <option value="NO_PREFERENCE">No Preference</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="contactPhone">Contact Phone</label>
+              <input
+                id="contactPhone"
+                name="contactPhone"
+                type="tel"
+                [(ngModel)]="form.contactPhone"
+                minlength="7"
+                maxlength="20"
+                placeholder="Optional contact number"
+                #contactPhoneInput="ngModel"
+              />
+              @if (contactPhoneInput.invalid && contactPhoneInput.touched) {
+                <small style="color:#dc2626;">
+                  Phone number must be at least 7 characters.
+                </small>
+              }
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input
+                type="checkbox"
+                name="isNegotiable"
+                [(ngModel)]="form.isNegotiable"
+              />
+              Rent is negotiable
+            </label>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h2>Amenities</h2>
+          <p class="section-description">
+            Select all amenities available at your property.
+          </p>
+
+          <div class="amenity-grid">
+            @for (amenity of amenitiesList; track amenity) {
+              <label class="amenity-option">
+                <input
+                  type="checkbox"
+                  [checked]="isAmenitySelected(amenity)"
+                  (change)="toggleAmenity(amenity, $any($event.target).checked)"
+                />
+                {{ amenity }}
+              </label>
+            }
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h2>Property Description</h2>
+
+          <div class="form-group">
+            <label for="title">Description Title *</label>
+            <input
+              id="title"
+              name="title"
+              type="text"
+              [(ngModel)]="form.title"
+                required
+                minlength="3"
+                maxlength="150"
+                placeholder="Give your listing a title"
+              #titleInput="ngModel"
+            />
+            @if (titleInput.invalid && titleInput.touched) {
+              <small style="color:#dc2626;">
+                Title must be at least 3 characters.
+              </small>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description *</label>
+<textarea
+              id="description"
+              name="description"
+              [(ngModel)]="form.description"
+              required
+              minlength="10"
+              maxlength="1400"
+              rows="6"
+              placeholder="Describe the property..."
+              #descriptionInput="ngModel"
+            ></textarea>
+            @if (descriptionInput.invalid && descriptionInput.touched) {
+              <small style="color:#dc2626;">
+                Description must be at least 10 characters.
+              </small>
+            }
+
+            <small class="character-count">
+              {{ form.description.length }}/1400 characters
+            </small>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h2>Property Images *</h2>
+          <p class="section-description">
+            Upload up to 8 images. Each image must be 5 MB or smaller.
+          </p>
+
+          <div class="upload-area">
+            <input
+              id="propertyImages"
+              type="file"
+              accept="image/*"
+              multiple
+              [disabled]="isUploading"
+              (change)="onFilesSelected($event)"
+            />
+          </div>
+          @if (imageErrorMessage) {
+            <small style="color:#dc2626;">{{ imageErrorMessage }}</small>
+          }
+
+          @if (selectedFiles.length > 0) {
+            <div class="selected-files">
+              <p>{{ selectedFiles.length }} image(s) selected:</p>
+
+              @for (file of selectedFiles; track file.name + file.size) {
+                <span>{{ file.name }} <button type="button" (click)="removeSelectedFile($index)" aria-label="Remove file" style="color:#dc2626;border:none;background:none;cursor:pointer;">×</button></span>
+              }
+
+              <button
+                type="button"
+                class="upload-button"
+                [disabled]="isUploading"
+                (click)="uploadImages()"
+              >
+                {{ isUploading ? 'Uploading...' : 'Upload Images' }}
+              </button>
+            </div>
+          }
+
+          @if (images.length > 0) {
+            <div class="image-preview-grid">
+              @for (image of images; track image.publicId; let i = $index) {
+                <div class="image-preview">
+                  <img [src]="image.imageUrl" alt="Property preview" />
+
+                  <button
+                    type="button"
+                    (click)="removeImage(i)"
+                    aria-label="Remove image"
+                    style="color:#dc2626;"
+                  >
+                    ×
+                  </button>
+                </div>
+              }
+            </div>
+          }
+
+          <p class="image-count">{{ images.length }}/8 images uploaded</p>
+        </section>
+
+        <div class="form-actions">
+          <button type="button" class="secondary-button" (click)="cancel()">
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="primary-button"
+            [disabled]="isUploading || isLoading"
+          >
+            Preview Listing
+          </button>
+        </div>
+      </form>
+    } @else {
+      <section class="preview-section">
+        <div class="preview-heading">
+          <h2>Preview Your Listing</h2>
+          <p>Review your property details before publishing.</p>
+        </div>
+
+        <div class="preview-images">
+          @for (image of images; track image.publicId) {
+            <img [src]="image.imageUrl" alt="Property image" />
+          }
+        </div>
+
+        <div class="preview-content">
+          <h2>{{ form.propertyName }}</h2>
+          <h3>{{ form.title }}</h3>
+
+          <p class="preview-price">
+            {{ form.monthlyRent | currency:'INR':'symbol':'1.0-0' }}/month
+          </p>
+
+          <p>{{ form.address }}, {{ form.area }}, {{ form.city }}, {{ form.state }} {{ form.postalCode }}</p>
+
+          <div class="preview-information">
+            <span>{{ form.propertyType }}</span>
+            <span>{{ form.squareFeet }} sq. ft.</span>
+            <span>{{ form.leaseType.replace('_', ' ') }}</span>
+            <span>{{ form.furnishingStatus }}</span>
+          </div>
+
+          <h3>Description</h3>
+          <p class="preview-description">{{ form.description }}</p>
+
+          <h3>Amenities</h3>
+          @if (form.amenities.length > 0) {
+            <div class="amenity-grid">
+              @for (amenity of form.amenities; track amenity) {
+                <span class="amenity-tag">{{ amenity }}</span>
+              }
+            </div>
+          } @else {
+            <p>No amenities selected.</p>
+          }
+
+          <p><strong>Shared Property:</strong> {{ form.sharedProperty ? 'Yes' : 'No' }}</p>
+          <p><strong>Negotiable:</strong> {{ form.isNegotiable ? 'Yes' : 'No' }}</p>
+          <p><strong>Price Mode:</strong> {{ form.priceMode }}</p>
+          <p><strong>Vegetarian Preference:</strong> {{ form.vegetarianPreference }}</p>
+        </div>
+
+        <div class="form-actions">
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="editForm()"
+            [disabled]="isLoading"
+          >
+            Edit Details
+          </button>
+
+          <button
+            type="button"
+            class="primary-button"
+            (click)="submitProperty()"
+            [disabled]="isLoading"
+          >
+            {{ isLoading
+              ? 'Publishing...'
+              : isEditMode ? 'Update Listing' : 'Publish Listing' }}
+          </button>
+        </div>
+      </section>
+    }
+  </div>
+</main>
